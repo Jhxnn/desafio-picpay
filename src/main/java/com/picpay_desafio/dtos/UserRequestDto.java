@@ -1,7 +1,6 @@
 package com.picpay_desafio.dtos;
 
-import java.util.UUID;
 
-public record UserRequestDto(UUID userId, String name, String email) {
+public record UserRequestDto(String name, String email, String password, String cpf) {
 
 }
