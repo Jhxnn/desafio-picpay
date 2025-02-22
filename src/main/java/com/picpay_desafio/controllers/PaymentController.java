@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,14 +37,9 @@ public class PaymentController {
 
 	@PostMapping
 	public ResponseEntity<Payment> createPayment(@RequestBody PaymentDto paymentDto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.createPayment(paymentDto));
+		return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.doPayment(paymentDto));
 	}
 
-	@PutMapping("/{id}")
-	public ResponseEntity<Payment> updatePayment(@PathVariable(name = "id")UUID id,
-			@RequestBody PaymentDto paymentDto){
-		return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.updatePayment(id, paymentDto));
-	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Payment> deletePayment(@PathVariable(name = "id")UUID id){

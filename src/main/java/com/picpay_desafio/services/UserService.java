@@ -15,7 +15,9 @@ import com.picpay_desafio.dtos.UserRequestDto;
 import com.picpay_desafio.dtos.UserResponseDto;
 import com.picpay_desafio.infra.security.TokenService;
 import com.picpay_desafio.models.User;
+import com.picpay_desafio.models.Wallet;
 import com.picpay_desafio.repositories.UserRepository;
+import com.picpay_desafio.repositories.WalletRepository;
 
 @Service
 public class UserService {
@@ -26,6 +28,9 @@ public class UserService {
 	
 	@Autowired
 	private AuthenticationManager authenticationManager;
+	
+	@Autowired
+	WalletRepository walletRepository;
 	
 	@Autowired
 	TokenService tokenService;
@@ -44,10 +49,16 @@ public class UserService {
 	public UserResponseDto createUser(UserRequestDto userRequestDto) {
 		if(userRepository.findByEmail(userRequestDto.email()) != null) return null;
 		String encryptedPass = new BCryptPasswordEncoder().encode(userRequestDto.password());
+		
 		var user = new User();
 		BeanUtils.copyProperties(userRequestDto, user);
 		user.setPassword(encryptedPass);
+		
 		userRepository.save(user);
+		
+		var wallet = new Wallet(0, user);
+		walletRepository.save(wallet);
+		
 		return new UserResponseDto(user.getUserId(), user.getName(), user.getEmail());
 	}
 	public String returnToken(AuthDto authDto) {
@@ -56,6 +67,8 @@ public class UserService {
 		var token = tokenService.generateToken((User) auth.getPrincipal());
 		return token;
 	}
+	
+
 	
 	public UserResponseDto updateUser(UUID id, UserRequestDto userRequestDto) {
 		var user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Cannot be found"));

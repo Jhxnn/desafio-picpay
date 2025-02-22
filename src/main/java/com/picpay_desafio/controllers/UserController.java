@@ -36,10 +36,11 @@ public class UserController {
 	public ResponseEntity<UserResponseDto> findById(@PathVariable(name = "id")UUID id){
 		return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
 	}
-//	@PostMapping
-//	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto){
-//		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userRequestDto));
-//	}
+	
+	@PostMapping
+	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userRequestDto));
+	}
 	
 	@PutMapping("/{id}")
 	public ResponseEntity<UserResponseDto> updateUser(@PathVariable(name = "id")UUID id,

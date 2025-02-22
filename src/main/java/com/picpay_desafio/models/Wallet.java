@@ -25,6 +25,18 @@ public class Wallet {
 	@ManyToOne
 	@JoinColumn(referencedColumnName = "id", name= "user_id")
 	private User users;
+	
+	
+	
+	
+	public Wallet(double amount, User users) {
+		this.amount = amount;
+		this.users = users;
+	}
+	
+	public Wallet() {
+		
+	}
 
 	public UUID getWalletId() {
 		return walletId;

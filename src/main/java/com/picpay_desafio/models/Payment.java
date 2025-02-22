@@ -23,8 +23,12 @@ public class Payment {
 	private double value;
 	
 	@ManyToOne
-	@JoinColumn(referencedColumnName = "id",name = "wallet_id")
-	private Wallet wallet;
+	@JoinColumn(referencedColumnName = "id",name = "payer_wallet_id")
+	private Wallet payerWallet;
+	
+	@ManyToOne
+	@JoinColumn(referencedColumnName = "id",name = "receiver_wallet_id")
+	private Wallet receiverWallet;
 	
 	private String description;
 
@@ -43,13 +47,22 @@ public class Payment {
 	public void setValue(double value) {
 		this.value = value;
 	}
+	
 
-	public Wallet getWallet() {
-		return wallet;
+	public Wallet getPayerWallet() {
+		return payerWallet;
 	}
 
-	public void setWallet(Wallet wallet) {
-		this.wallet = wallet;
+	public void setPayerWallet(Wallet payerWallet) {
+		this.payerWallet = payerWallet;
+	}
+
+	public Wallet getReceiverWallet() {
+		return receiverWallet;
+	}
+
+	public void setReceiverWallet(Wallet receiverWallet) {
+		this.receiverWallet = receiverWallet;
 	}
 
 	public String getDescription() {

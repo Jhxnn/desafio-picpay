@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.picpay_desafio.dtos.PaymentDto;
 import com.picpay_desafio.models.Payment;
+import com.picpay_desafio.models.enums.UserRole;
 import com.picpay_desafio.repositories.PaymentRepository;
 
 @Service
@@ -29,24 +30,27 @@ public class PaymentService {
 		return paymentRepository.findById(id).orElseThrow(()-> new RuntimeException("cannot be found"));
 	}
 	
-	public Payment createPayment(PaymentDto paymentDto) {
+	public Payment doPayment(PaymentDto paymentDto) {
+		var payerWallet = walletService.findById(paymentDto.payerWalletId());
+		var receiverWallet = walletService.findById(paymentDto.receiverWalletId());
 		var payment = new Payment();
+		if(payerWallet.getAmount() < paymentDto.value()) {
+			return null;
+		}
+		else if(payerWallet.getUsers().getRole() == UserRole.STORE_OWNER) {
+			return null;
+		}
+		
 		BeanUtils.copyProperties(paymentDto, payment);
-		var wallet = walletService.findById(paymentDto.walletId());
-		payment.setWallet(wallet);
+		payerWallet.setAmount(payerWallet.getAmount() - paymentDto.value());
+		payerWallet.setAmount(payerWallet.getAmount() + paymentDto.value());
+		payment.setReceiverWallet(receiverWallet);
+		payment.setPayerWallet(payerWallet);
+		
 		return paymentRepository.save(payment);
-		
+
 	}
-	
-	public Payment updatePayment(UUID id, PaymentDto paymentDto) {
-		var payment = findById(id);
-		BeanUtils.copyProperties(paymentDto, payment);
-		var wallet = walletService.findById(paymentDto.walletId());
-		payment.setWallet(wallet);
-		return paymentRepository.save(payment);
-		
-		
-	}
+
 	
 	public void deletePayment(UUID id) {
 		var payment = findById(id);
