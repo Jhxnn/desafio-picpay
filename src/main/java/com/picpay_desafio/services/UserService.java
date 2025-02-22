@@ -35,6 +35,10 @@ public class UserService {
 	@Autowired
 	TokenService tokenService;
 	
+	@Autowired
+	EmailService emailService;
+	
+	
 	
 	public UserResponseDto findById(UUID id) {
 		var user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("Cannot be found"));
@@ -53,7 +57,7 @@ public class UserService {
 		var user = new User();
 		BeanUtils.copyProperties(userRequestDto, user);
 		user.setPassword(encryptedPass);
-		
+		emailService.enviarEmailTexto(user.getEmail(), "Conta criada","Bem vindo ao picpay simplificado " + user.getName() + ", faça bom uso :)");
 		userRepository.save(user);
 		
 		var wallet = new Wallet(0, user);

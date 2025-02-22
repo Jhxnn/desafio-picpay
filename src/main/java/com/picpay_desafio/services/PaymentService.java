@@ -22,6 +22,9 @@ public class PaymentService {
 	@Autowired
 	WalletService walletService;
 	
+	@Autowired
+	EmailService emailService;
+	
 	public List<Payment> findAll(){
 		return paymentRepository.findAll();
 	}
@@ -46,7 +49,8 @@ public class PaymentService {
 		payerWallet.setAmount(payerWallet.getAmount() + paymentDto.value());
 		payment.setReceiverWallet(receiverWallet);
 		payment.setPayerWallet(payerWallet);
-		
+		emailService.enviarEmailTexto(payerWallet.getUsers().getEmail(), "Pagamento efetuado", "Um pagamento foi efetuado no valor de " + paymentDto.value() +  " R$ para: " + receiverWallet.getUsers().getName());
+		emailService.enviarEmailTexto(receiverWallet.getUsers().getEmail(), "Pagamento recebido", "Um pagamento foi recebido no valor de " + paymentDto.value() +  " R$ de: " + payerWallet.getUsers().getName());
 		return paymentRepository.save(payment);
 
 	}
