@@ -1,5 +1,6 @@
 package com.picpay_desafio.models;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
@@ -16,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -38,7 +40,35 @@ public class User implements UserDetails {
 	
 	private UserRole role;
 	
+	private LocalDateTime createdAt;
+
 	
+	
+	
+	@PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+	
+	
+	
+	
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+
+
 
 	public UserRole getRole() {
 		return role;

@@ -1,5 +1,6 @@
 package com.picpay_desafio.models;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 
 @Entity
@@ -31,6 +33,36 @@ public class Payment {
 	private Wallet receiverWallet;
 	
 	private String description;
+	
+	private LocalDateTime createdAt;
+
+	
+	
+	
+	@PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+	
+	
+	
+
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+
+
+
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+
+
+
 
 	public UUID getPaymentId() {
 		return paymentId;
@@ -72,6 +104,8 @@ public class Payment {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	
 	
 	
 	
