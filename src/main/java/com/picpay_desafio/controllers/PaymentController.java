@@ -1,5 +1,6 @@
 package com.picpay_desafio.controllers;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,9 +35,15 @@ public class PaymentController {
 	public ResponseEntity<Payment> findById(@PathVariable(name = "id")UUID id){
 		return ResponseEntity.status(HttpStatus.OK).body(paymentService.findById(id));
 	}
+	
+	@GetMapping("/between/{startDate}/{endDate}")
+	public ResponseEntity<List<Payment>> findByBetweenDate(@PathVariable(name = "startDate")LocalDateTime startDate,
+			@PathVariable(name = "endDate")LocalDateTime endDate){
+		return ResponseEntity.status(HttpStatus.OK).body(paymentService.findByBetweenDate(startDate, endDate));
+	}
 
 	@PostMapping
-	public ResponseEntity<Payment> createPayment(@RequestBody PaymentDto paymentDto){
+	public ResponseEntity<Payment> doPayment(@RequestBody PaymentDto paymentDto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(paymentService.doPayment(paymentDto));
 	}
 

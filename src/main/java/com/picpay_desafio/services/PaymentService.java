@@ -1,5 +1,6 @@
 package com.picpay_desafio.services;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -53,6 +54,10 @@ public class PaymentService {
 		emailService.enviarEmailTexto(receiverWallet.getUsers().getEmail(), "Pagamento recebido", "Um pagamento foi recebido no valor de " + paymentDto.value() +  " R$ de: " + payerWallet.getUsers().getName());
 		return paymentRepository.save(payment);
 
+	}
+	
+	public List<Payment> findByBetweenDate(LocalDateTime starDate, LocalDateTime endDate){
+		return paymentRepository.findByPaymentDateBetween(starDate, endDate);
 	}
 
 	

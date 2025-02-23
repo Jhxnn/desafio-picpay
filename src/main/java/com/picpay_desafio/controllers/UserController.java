@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.picpay_desafio.dtos.AuthDto;
 import com.picpay_desafio.dtos.UserRequestDto;
 import com.picpay_desafio.dtos.UserResponseDto;
 import com.picpay_desafio.services.UserService;
@@ -37,9 +38,14 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
 	}
 	
-	@PostMapping
+	@PostMapping("/register")
 	public ResponseEntity<UserResponseDto> createUser(@RequestBody UserRequestDto userRequestDto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(userService.createUser(userRequestDto));
+	}
+	
+	@PostMapping("/login")
+	public ResponseEntity<String> login(@RequestBody AuthDto authDto){
+		return ResponseEntity.status(HttpStatus.CREATED).body(userService.returnToken(authDto));
 	}
 	
 	@PutMapping("/{id}")
