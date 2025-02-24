@@ -40,6 +40,11 @@ public class StoreController {
 	public ResponseEntity<Store> createStore(@RequestBody StoreDto storeDto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(storeService.createStore(storeDto));
 	}
+	
+	@GetMapping("/cnpj/{cnpj}")
+	public ResponseEntity<Store> findByCnpj(@PathVariable(name = "cnpj")String cnpj){
+		return ResponseEntity.status(HttpStatus.OK).body(storeService.findByCnpj(cnpj));
+	}
 
 	@PutMapping("/{id}")
 	public ResponseEntity<Store> updateStore(@PathVariable(name = "id")UUID id,

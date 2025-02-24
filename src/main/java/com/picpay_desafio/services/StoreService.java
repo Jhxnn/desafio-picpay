@@ -38,7 +38,10 @@ public class StoreService {
 		storeRepository.save(store);
 		return store;
 	}
-	
+
+	public Store findByCnpj(String cnpj) {
+		return storeRepository.findByCnpj(cnpj);
+	}
 	public Store updateStore(UUID id, StoreDto storeDto) {
 		var store = findById(id);
 		BeanUtils.copyProperties(storeDto, store);
