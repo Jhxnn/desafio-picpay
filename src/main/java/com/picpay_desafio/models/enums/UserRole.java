@@ -1,9 +1,19 @@
 package com.picpay_desafio.models.enums;
 
 public enum UserRole {
-
-	ADMIN,
-	STORE_OWNER,
-	COMMON,
 	
+	ADMIN("admin"),
+	BASIC("basic"),
+	STORE_OWNER("store");
+	
+	private String role;
+	
+	
+	UserRole(String role) {
+		this.role = role;
+	}
+	
+	public String getRole() {
+		return role;
+	}
 }
