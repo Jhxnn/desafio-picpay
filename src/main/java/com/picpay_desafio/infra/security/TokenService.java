@@ -19,12 +19,12 @@ public class TokenService {
 	@Value("${api.security.token.secret}")
 	private String secret;
 
-	public String generateToken(User user) {
+	public String generateToken(User cliente) {
 		try {
 			Algorithm algorithm = Algorithm.HMAC256(secret);
 			String token = JWT.create()
 					.withIssuer("picpay")
-					.withSubject(user.getEmail())
+					.withSubject(cliente.getEmail())
 					.withExpiresAt(getExpiredDate())
 					.sign(algorithm);
 			
@@ -46,7 +46,7 @@ public class TokenService {
 					.getSubject();
 		}
 		catch(JWTVerificationException e) {
-			return null; 
+			return ""; 
 		}
 	}
 	

@@ -1,5 +1,6 @@
 package com.picpay_desafio.infra.security;
 
+
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class SecurityFilter extends OncePerRequestFilter{
 	TokenService tokenService;
 	
 	@Autowired
-	UserRepository userRepository;
+	UserRepository clienteRepository;
 	
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -33,10 +34,10 @@ public class SecurityFilter extends OncePerRequestFilter{
 		var token = this.recoverToken(request);
 		if(token != null) {
 			var email = tokenService.validateToken(token);
-			UserDetails cliente = userRepository.findByEmail(email);
+			UserDetails cliente = clienteRepository.findByEmail(email);
 			var authentication = new UsernamePasswordAuthenticationToken(cliente, null, cliente.getAuthorities());
 			SecurityContextHolder.getContext().setAuthentication(authentication);
-		} 
+		}
 		filterChain.doFilter(request, response);
 	}
 	
