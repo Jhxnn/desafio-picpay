@@ -39,6 +39,11 @@ public class WalletService {
 		return wallet;
 	}
 	
+	public Wallet findByUser(UUID id) {
+		var user = userRepository.findById(id).orElseThrow(()-> new RuntimeException("cannot be found"));
+		return walletRepository.findByUsers(user);
+	}
+	
 	public Wallet updateWallet(UUID id, WalletDto walletDto) {
 		var wallet = findById(id);
 		BeanUtils.copyProperties(walletDto, wallet);

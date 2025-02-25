@@ -26,6 +26,8 @@ public class WalletController {
 	@Autowired
 	WalletService walletService;
 
+	
+	
 	@GetMapping
 	public ResponseEntity<List<Wallet>> findAll(){
 		return ResponseEntity.status(HttpStatus.OK).body(walletService.findAll());
@@ -34,6 +36,11 @@ public class WalletController {
 	@GetMapping("/{id}")
 	public ResponseEntity<Wallet> findById(@PathVariable(name = "id")UUID id){
 		return ResponseEntity.status(HttpStatus.OK).body(walletService.findById(id));
+	}
+	
+	@GetMapping("/user/{id}")
+	public ResponseEntity<Wallet> findByUser(@PathVariable(name = "id")UUID id){
+		return ResponseEntity.status(HttpStatus.OK).body(walletService.findByUser(id));
 	}
 
 	@PostMapping
