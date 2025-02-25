@@ -19,39 +19,45 @@ import com.picpay_desafio.dtos.StoreDto;
 import com.picpay_desafio.models.Store;
 import com.picpay_desafio.services.StoreService;
 
+import io.swagger.v3.oas.annotations.Operation;
+
 @RestController
 @RequestMapping("/store")
 public class StoreController {
 
 	@Autowired
 	StoreService storeService;
-
+	
+	
+	@Operation(description = "Lista todas as lojas")
 	@GetMapping
 	public ResponseEntity<List<Store>> findAll(){
 		return ResponseEntity.status(HttpStatus.OK).body(storeService.findAll());
 	}
 
+	@Operation(description="Loja pelo id")
 	@GetMapping("/{id}")
 	public ResponseEntity<Store> findById(@PathVariable(name = "id")UUID id){
 		return ResponseEntity.status(HttpStatus.OK).body(storeService.findById(id));
 	}
 
+	@Operation(description="Cria uma loja")
 	@PostMapping
 	public ResponseEntity<Store> createStore(@RequestBody StoreDto storeDto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(storeService.createStore(storeDto));
 	}
-	
+	@Operation(description="Buscar Loja pelo cnpj")
 	@GetMapping("/cnpj/{cnpj}")
 	public ResponseEntity<Store> findByCnpj(@PathVariable(name = "cnpj")String cnpj){
 		return ResponseEntity.status(HttpStatus.OK).body(storeService.findByCnpj(cnpj));
 	}
-
+	@Operation(description="Atualiza uma loja")
 	@PutMapping("/{id}")
 	public ResponseEntity<Store> updateStore(@PathVariable(name = "id")UUID id,
 			@RequestBody StoreDto storeDto){
 		return ResponseEntity.status(HttpStatus.CREATED).body(storeService.updateStore(id, storeDto));
 	}
-
+	@Operation(description="Deleta uma loja")
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Store> deleteStore(@PathVariable(name = "id")UUID id){
 		storeService.deleteStore(id);

@@ -12,6 +12,7 @@ import com.picpay_desafio.dtos.PaymentDto;
 import com.picpay_desafio.models.Payment;
 import com.picpay_desafio.models.enums.UserRole;
 import com.picpay_desafio.repositories.PaymentRepository;
+import com.picpay_desafio.repositories.WalletRepository;
 
 @Service
 public class PaymentService {
@@ -25,6 +26,9 @@ public class PaymentService {
 	
 	@Autowired
 	EmailService emailService;
+	
+	@Autowired
+	WalletRepository walletRepository;
 	
 	public List<Payment> findAll(){
 		return paymentRepository.findAll();
@@ -47,11 +51,13 @@ public class PaymentService {
 		
 		BeanUtils.copyProperties(paymentDto, payment);
 		payerWallet.setAmount(payerWallet.getAmount() - paymentDto.value());
-		payerWallet.setAmount(payerWallet.getAmount() + paymentDto.value());
+		receiverWallet.setAmount(receiverWallet.getAmount() + paymentDto.value());
 		payment.setReceiverWallet(receiverWallet);
 		payment.setPayerWallet(payerWallet);
 		emailService.enviarEmailTexto(payerWallet.getUsers().getEmail(), "Pagamento efetuado", "Um pagamento foi efetuado no valor de " + paymentDto.value() +  " R$ para: " + receiverWallet.getUsers().getName());
 		emailService.enviarEmailTexto(receiverWallet.getUsers().getEmail(), "Pagamento recebido", "Um pagamento foi recebido no valor de " + paymentDto.value() +  " R$ de: " + payerWallet.getUsers().getName());
+		walletRepository.save(payerWallet);
+		walletRepository.save(receiverWallet);
 		return paymentRepository.save(payment);
 
 	}
@@ -59,6 +65,7 @@ public class PaymentService {
 	public List<Payment> findByBetweenDate(LocalDateTime starDate, LocalDateTime endDate){
 		return paymentRepository.findByPaymentDateBetween(starDate, endDate);
 	}
+	
 
 	
 	public void deletePayment(UUID id) {
