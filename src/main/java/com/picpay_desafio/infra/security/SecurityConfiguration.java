@@ -33,7 +33,7 @@ public class SecurityConfiguration {
 						.anyRequest().authenticated()
 						 )
 				.addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-				.build();
+				.build();	
 	}
 	
 	@Bean
